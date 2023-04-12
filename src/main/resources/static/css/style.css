@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+#wrap {
+	height: 1000px;
+}
+
+header {
+	height: 100px;
+}
+
+.contents {
+	min-height: 800px;
+}
+
+footer {
+	height: 100px;
+}
+
+#sign-up-box {
+	max-width: 450px;
+}
+
+#title {
+	text-shadow: 5px 4px 5px lightgray;
+}
+
+.logo {
+	height:70%;
+}
+.status {
+	height: 30%;
+}
