@@ -19,4 +19,45 @@
 	WHERE
 		`loginId` = #{loginId}
 </select>
+
+<select id="selectUserByLoginIdAndPassword" resultType="com.memo.user.model.User" parameterType="map">
+	SELECT
+		`id`
+		,`loginId`
+		, `password`
+		, `name`
+		, `email`
+		, `profileImagePath`
+		, `createdAt`
+		, `updatedAt`
+	FROM
+		`user`
+	WHERE
+		`loginId` = #{loginId} 
+		AND 
+		`password` = #{password} 
+		
+</select>
+
+<insert id="insertUser" parameterType="map">
+	INSERT INTO
+		`user`
+	(
+		`loginId`
+		, `password`
+		, `name`
+		, `email`
+		, `createdAt`
+		, `updatedAt`
+	)
+	VALUES
+	(
+		#{loginId}
+		, #{password}
+		, #{name}
+		, #{email}
+		, NOW()
+		, NOW()
+	)
+</insert>
 </mapper>
