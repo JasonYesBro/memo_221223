@@ -28,6 +28,7 @@
 			<jsp:include page="../include/header.jsp" />
 		</header>
 		<section class="contents">
+		<!-- EL 문법 -->
 			<jsp:include page="../${ view }.jsp" />
 		</section>
 		<footer class="bg-secondary">
