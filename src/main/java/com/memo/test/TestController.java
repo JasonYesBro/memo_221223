@@ -43,13 +43,13 @@ public class TestController {
 		return "test/test";
 	}
 	
-	@ResponseBody
-	@RequestMapping("/test4")
-	public List<Map <String, Object>> testDb() {
-		// 빠르게 테스트하기 위해 Map 자료구조를 이용 & service단계 생략
-				
-		return postMapper.selectPostList();
-	}
+//	@ResponseBody
+//	@RequestMapping("/test4")
+//	public List<Map <String, Object>> testDb() {
+//		// 빠르게 테스트하기 위해 Map 자료구조를 이용 & service단계 생략
+//				
+//		return postMapper.selectPostList();
+//	}
 	
 	
 }
