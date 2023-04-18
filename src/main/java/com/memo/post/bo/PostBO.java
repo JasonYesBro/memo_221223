@@ -40,4 +40,9 @@ public class PostBO {
 		return postMapper.selectPostList();
 	}
 
+	public Post getPostByPostIdAndUserId(int postId, int userId) {
+		// TODO Auto-generated method stub
+		return postMapper.selectPostByPostIdAndUserId(postId, userId);
+	}
+
 }

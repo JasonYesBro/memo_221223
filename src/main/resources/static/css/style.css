@@ -39,3 +39,11 @@ footer {
 #title {
 	text-shadow: 5px 4px 5px lightgray;
 }
+
+a {
+	color : black;
+}
+
+a:hover {
+	text-decoration: none;
+}
