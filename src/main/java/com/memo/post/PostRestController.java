@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpSession;
 public class PostRestController {
 	
 	@Autowired
-	PostBO postBO;
+	private PostBO postBO;
 	
 	/**
 	 * 글쓰기 API
