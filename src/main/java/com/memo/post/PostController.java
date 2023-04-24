@@ -59,6 +59,8 @@ public class PostController {
 		// postId에 해당하는 post를 가져와야 함 by postId ,(userId 더 안전)
 		int userId = (int)session.getAttribute("userId");
 		
+		// session 이 없을 때 redirect 처리
+		
 		Post post = null;
 		post = postBO.getPostByPostIdAndUserId(postId, userId);
 		
@@ -66,4 +68,5 @@ public class PostController {
 		model.addAttribute("view", "post/postDetail");
 		return "template/layout";
 	}
+	
 }
