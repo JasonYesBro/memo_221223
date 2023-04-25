@@ -13,7 +13,8 @@
             <!-- daily rollover -->
             <fileNamePattern>/Users/jasonmilian/Desktop/megaProject/6_spring_project/memo/workspace/log.%d{yyyy-MM-dd}-${MYPID}.log</fileNamePattern>
             <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
+            <maxHistory>3</maxHistory>
+            <totalSizeCap>15mb</totalSizeCap>
         </rollingPolicy>
 
         <encoder>
