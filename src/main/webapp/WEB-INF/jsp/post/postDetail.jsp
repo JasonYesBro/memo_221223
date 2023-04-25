@@ -5,7 +5,7 @@
 	<div class="w-50">
 		<h1>글 상세 / 수정</h1>
 		<input type="text" id="subject" class="form-control"
-			placeholder="제목을 입력하세요">
+			placeholder="제목을 입력하세요" value="${post.subject }">
 		<textarea rows="10" class="form-control" id="content"
 			placeholder=" ${post.content}"></textarea>
 		<%-- 이미지가 있을 때만 이미지 영역 추가 not empty-> null 이거나 비어있거나 둘다 체크해줌 --%>
@@ -17,8 +17,8 @@
 		<div class="d-flex justify-content-end my-4">
 			<input type="file" id="file" accept=".jpg, .jpeg, .png, .gif">
 		</div>
-		<div class="d-flex justify-content-between">
-			<button type="button" id="postDeleteBtn" class="btn btn-secondary">삭제</button>
+		<div class="d-flex justify-content-between mb-3">
+			<button type="button" id="postDeleteBtn" class="btn btn-secondary" data-post-id="${post.id}">삭제</button>
 
 			<div>
 				<a href="/post/post_list_view" class="btn btn-dark">목록</a>
@@ -36,8 +36,6 @@
 				let postId = $(this).data("post-id");
 				// file의 이름만 가져옴
 				let file = $('#file').val();
-
-				console.log(postId);
 				
 				if (!subject) {
 					alert("제목을 입력해주세요.");
@@ -90,6 +88,34 @@
 					}
 				});
 				
+			});
+			
+			$('#postDeleteBtn').on('click', function() {
+				let postId = $(this).data("post-id");
+				// console.log(postId);
+				let formData = new FormData();
+				
+				formData.append("postId", postId);
+				formData.append("file", $('#file')[0].files[0]);
+				
+				$.ajax({
+					type : "DELETE"
+					, url : "/post/delete"
+					, data : {"postId" : postId}
+					/* , data : {"postId" : postId} */
+					, success : function (data) {
+						if(data.code == 1) {
+							alert("게시글이 삭제되었습니다.");
+							location.href = "/post/post_list_view";
+						} else {
+							alert(data.errorMessage);
+						}
+					}
+					, error : function(status, request, error) {
+						alert("메모를 삭제하는데 실패했습니다. 관리자에게 문의바랍니다.");
+					}
+					
+				});
 			});
 		});
 	</script>

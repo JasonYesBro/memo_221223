@@ -78,5 +78,26 @@ public class PostBO {
 		// 원래 이미지가 Null 인데 사용자가 또 null로 집어 넣을 수 있게 하기 위해 DB에서 구현함
 		postMapper.updatePostByPostId(postId, subject, content, imagePath);
 	}
+	
+	public int deletePostByPostIdAndUserId(int postId, int userId) {
+		Post post = getPostByPostIdAndUserId(postId, userId); // 실무에서는 select 를 하는 것이 부담이기 때문에 캐시라는 임시 바구니에 담아놓는다. 그것을 BO단계에서 진행하기 때문에 BO의 메서드를 불러옴 or BO에서 많은 가공을 하고 있기때문에 BO의 가공된 값을 사용하기 위해.
+		
+		// 가져온post가 없다면 -> null 체크
+		if (post == null) {
+			logger.warn("[delete post] post is null. postId: {}. userId: {}", postId, userId);
+			return 0;
+		}
+		
+		String imagePath = null;
+		// 삭제할 시에 폴더의 이미지 또한 같이 삭제해줘야 함
+		imagePath = post.getImagePath();
+
+		// -- imagePath가 null이 아닐 때 (성공) 그리고 기존 image가 있을 때 -> 기존이미지 삭제
+		if (imagePath != null) {
+			// 기존 이미지 제거하기 때문에 파라미터 조심
+			fileManager.deleteFile(post.getImagePath());
+		}
+		return postMapper.deletePostByPostIdAndUserId(postId, userId);
+	}
 
 }
