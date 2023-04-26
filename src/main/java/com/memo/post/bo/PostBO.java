@@ -1,5 +1,6 @@
 package com.memo.post.bo;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,6 +17,9 @@ import com.memo.post.model.Post;
 public class PostBO {
 	//private Logger logger = LoggerFactory.getLogger(PostBO.class);
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	// 상수 선언 페이징 갯수 설정
+	private static final int POST_MAX_SIZE = 3;
 	
 	@Autowired
 	private PostMapper postMapper;
@@ -40,8 +44,42 @@ public class PostBO {
 		return postMapper.insertPost(userId, subject, content, imagePath);	
 	}
 
-	public List<Post> getPostList() {
-		return postMapper.selectPostList();
+	// 페이지 클래스 따로 만들어서 만드는게 더 나음
+	// 페이징 처리
+	public List<Post> getPostListByUserId(int userId, Integer prevId, Integer nextId) {
+		
+		// 게시글 번호가 최신순으로 넘어오기 때문에 10 9 8 \ 7 6 5 \ 4 3 2 \ 1
+		// 만약 4 3 2 페이지에 있을 때
+		// 1) 다음 : 2보다 작은 3개 DESC
+		
+		
+		// 2) 이전 : 4보다 큰 3개 ASC(5, 6, 7) -> List reverse (7, 6, 5)
+		
+		
+		String direction = null;  // 방향
+		Integer standardId = null; // 기준 postId
+		
+		if (prevId != null) {
+			direction = "prev";
+			standardId = prevId;
+			
+			List<Post> postList = postMapper.selectPostListByUserId(userId, direction, standardId, POST_MAX_SIZE);
+			
+			// 가져온 list 를 뒤집는다. 5 6 7 -> 7 6 5
+			Collections.reverse(postList); // 저장까지 해주는 메서드임, void인데 설명서 읽어봐라
+			
+			// return 결과 -> 메소드 종료
+			return postList;
+			
+		} else if (nextId != null) {
+			direction = "next";
+			standardId = nextId;
+			
+		}
+		// 3) 만약 첫 페이지일 때 (이전, 다음 없음) DESC 3개
+		
+		
+		return postMapper.selectPostListByUserId(userId, direction, standardId, POST_MAX_SIZE);
 	}
 
 	public Post getPostByPostIdAndUserId(int postId, int userId) {
@@ -98,6 +136,17 @@ public class PostBO {
 			fileManager.deleteFile(post.getImagePath());
 		}
 		return postMapper.deletePostByPostIdAndUserId(postId, userId);
+	}
+
+	public boolean isPrevLastPage(int userId, int prevId) {
+		int postId = postMapper.selectPostIdByUserIdSort(userId, "DESC");
+		return postId == prevId; // true 면 끝 false 면 끝 아님
+		
+	}
+	
+	public boolean isNextLastPage(int userId, int nextId) {
+		int postId = postMapper.selectPostIdByUserIdSort(userId, "ASC");
+		return postId == nextId; // true 면 끝 false 면 끝 아님
 	}
 
 }
